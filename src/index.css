@@ -5,3 +5,27 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+
+:root {
+  --cor-marrom-escuro: #342414;
+  --cor-marrom-claro: #4c351e;
+  --cor-areia: #b88e42;
+  --cor-pele: #f1d588;
+  --cor-claro: #ffecb9;
+  --cor-cinza-paleta: #c4b58e;
+}
+
+/* Aplicando as cores ao Tailwind */
+.bg-marrom-escuro { background-color: var(--cor-marrom-escuro); }
+.bg-marrom-claro { background-color: var(--cor-marrom-claro); }
+.bg-areia { background-color: var(--cor-areia); }
+.bg-pele { background-color: var(--cor-pele); }
+.bg-claro { background-color: var(--cor-claro); }
+.bg-cinza-paleta { background-color: var(--cor-cinza-paleta); }
+
+.text-marrom-escuro { color: var(--cor-marrom-escuro); }
+.text-marrom-claro { color: var(--cor-marrom-claro); }
+.text-areia { color: var(--cor-areia); }
+.text-pele { color: var(--cor-pele); }
+.text-claro { color: var(--cor-claro); }
+.text-cinza-paleta { color: var(--cor-cinza-paleta); }
