@@ -35,7 +35,7 @@ export const Login: React.FC = () => {
       };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-claro p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#643f23] to-[#ffecb9] p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="bg-marrom-escuro p-6">
           <img
@@ -78,7 +78,7 @@ export const Login: React.FC = () => {
 
             <button
               onClick={(e) => handleLogin(e)}
-              className="w-full bg-areia text-marrom-escuro font-bold py-2 px-4 rounded-lg hover:bg-pele hover:cursor-pointer transition-colors"
+              className="w-full bg-areia text-marrom-escuro font-bold py-2 px-4 rounded-lg hover:cursor-pointer hover:bg-pele transition-hover"
             >
               Entrar
             </button>
