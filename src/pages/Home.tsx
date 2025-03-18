@@ -4,13 +4,15 @@ import { useNavigate } from "react-router-dom";
 import Logo from '../assets/logo-light-sem-subtitulo.png'
 import { previewService } from "../services/user";
 import { Appointment } from "../types/appointment";
+import { FaBars, FaTimes } from 'react-icons/fa';
 
 export const Home = () => {
   const { isAuthenticated, user } = useAuth(); 
   const navigate = useNavigate();
   const [nextAppointments, setNextAppointments] = useState<Appointment[]>([]);
-  const [appointmentsCount, setAppointmentsCount] = useState();
-  const [commission, setCommission] = useState();
+  const [appointmentsCount, setAppointmentsCount] = useState<number>();
+  const [commission, setCommission] = useState<number>();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const checkAndFetchData = async () => {
@@ -35,25 +37,24 @@ export const Home = () => {
     checkAndFetchData();
   }, []);
 
-  const agendamentos = [
-    { id: 1, cliente: "João Silva", data: "25/10/2023", horario: "10:00" },
-    { id: 2, cliente: "Maria Oliveira", data: "26/10/2023", horario: "14:00" },
-    { id: 3, cliente: "Carlos Souza", data: "27/10/2023", horario: "16:00" },
-  ];
-
-  const comissaoSemanal = 1200;
-  const agendamentosRestantes = 5; 
-
   return (
-    <section className="min-h-screen bg-gradient-to-b from-[#643f23] to-[#ffecb9] p-4">
-      <header className="bg-marrom-escuro text-claro p-4 rounded-lg mb-6">
+    <section className="min-h-screen bg-gradient-to-b from-[#643f23] to-[#ffecb9] p-4 pt-24">
+      <header className="fixed top-0 left-0 w-full bg-marrom-escuro text-claro p-4 z-50">
         <div className="container mx-auto flex justify-between items-center">
           <img
             src={Logo}
             alt="Logo"
             className="w-12 h-12"
           />
-          <nav>
+
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="text-claro hover:text-areia transition-colors md:hidden"
+          >
+            {isMenuOpen ? <FaTimes size={32} /> : <FaBars size={32} />}
+          </button>
+
+          <nav className="hidden md:block">
             <ul className="flex space-x-4">
               <li>
                 <a href="#" className="hover:text-areia transition-colors">
@@ -73,6 +74,30 @@ export const Home = () => {
             </ul>
           </nav>
         </div>
+
+        <nav
+          className={`md:hidden fixed top-16 right-0 h-full bg-claro w-64 p-4 transform transition-transform duration-300 ease-in-out ${
+            isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
+          <ul className="flex flex-col space-y-4">
+            <li>
+              <a href="#" className="text-marrom-escuro hover:text-areia transition-colors">
+                Início
+              </a>
+            </li>
+            <li>
+              <a href="#" className="text-marrom-escuro hover:text-areia transition-colors">
+                Perfil
+              </a>
+            </li>
+            <li>
+              <a href="#" className="text-marrom-escuro hover:text-areia transition-colors">
+                Sair
+              </a>
+            </li>
+          </ul>
+        </nav>
       </header>
 
       <main className="container mx-auto">
