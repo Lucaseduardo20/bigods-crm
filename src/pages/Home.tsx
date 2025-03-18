@@ -5,6 +5,7 @@ import Logo from '../assets/logo-light-sem-subtitulo.png'
 import { previewService } from "../services/user";
 import { Appointment } from "../types/appointment";
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { Header } from "../components/utils/Header";
 
 export const Home = () => {
   const { isAuthenticated, user } = useAuth(); 
@@ -39,7 +40,7 @@ export const Home = () => {
 
   return (
     <section className="min-h-screen bg-gradient-to-b from-[#643f23] to-[#ffecb9] p-4 pt-24">
-      <header className="fixed top-0 left-0 w-full bg-marrom-escuro text-claro p-4 z-50">
+      {/* <header className="fixed top-0 left-0 w-full bg-marrom-escuro text-claro p-4 z-50">
         <div className="container mx-auto flex justify-between items-center">
           <img
             src={Logo}
@@ -98,7 +99,8 @@ export const Home = () => {
             </li>
           </ul>
         </nav>
-      </header>
+      </header> */}
+      <Header />
 
       <main className="container mx-auto">
         <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
