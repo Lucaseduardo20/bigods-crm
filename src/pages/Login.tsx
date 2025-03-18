@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import LogoLight from '../assets/logo-light.png'
 import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 
 export const Login: React.FC = () => {
@@ -8,7 +9,9 @@ export const Login: React.FC = () => {
     const [password, setPassword] = useState('123123');
     const [loginStatus, setLoginStatus] = useState<number>();
     const [loading, setLoading] = useState(false);
-    const { login, isAuthenticated, setIsAuthenticated } = useAuth();
+    const { login, isAuthenticated, setIsAuthenticated, setUser } = useAuth();
+    const navigate = useNavigate();
+
 
     const handleLogin = async (e: any) => {
         e.preventDefault();
@@ -21,6 +24,9 @@ export const Login: React.FC = () => {
             setTimeout(() => {
               setLoading(false);
               setIsAuthenticated(true);
+              setUser(response.data.user);
+              localStorage.setItem('user', JSON.stringify(response.data.user));
+              navigate('/home');
             }, 2000);
           } else if (response && response.status === 401) {
             setLoginStatus(401);
@@ -35,8 +41,8 @@ export const Login: React.FC = () => {
       };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#643f23] to-[#ffecb9] p-4">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-lg overflow-hidden">
+    <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#643f23] to-[#ffecb9] p-4">
+      <article className="w-full max-w-md bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="bg-marrom-escuro p-6">
           <img
             src={LogoLight}
@@ -84,7 +90,7 @@ export const Login: React.FC = () => {
             </button>
           </form>
         </div>
-      </div>
-    </div>
+      </article>
+    </section>
   );
 };

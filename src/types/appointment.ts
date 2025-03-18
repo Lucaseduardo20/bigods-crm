@@ -8,8 +8,8 @@ export type AppointmentContextType = {
 export type Appointment = {
     id: number,
     customer: Customer,
-    date: string,
-    time: string,
+    appointment_date: string,
+    appointment_time: string,
     status: AppointmentStatus
 }
 
