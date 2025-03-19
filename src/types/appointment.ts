@@ -10,7 +10,10 @@ export type Appointment = {
     customer: Customer,
     appointment_date: string,
     appointment_time: string,
-    status: AppointmentStatus
+    status: AppointmentStatus,
+    assigned_to?: string,
+    payment_method?: AppointmentPaymentMethod,
+    estimated_time: string
 }
 
 export type Customer = {

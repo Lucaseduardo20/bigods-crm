@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { AppointmentProvider, useAppointments } from './contexts/AppointmentContext'
 import { Login } from './pages/Login'
 import { Home } from './pages/Home';
+import { Appointments } from './pages/Appointments';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/Appointments" element={<Appointments />} />
         </Routes>
       </Router>
       </AppointmentProvider>
