@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 export const Login: React.FC = () => {
-    const [email, setEmail] = useState('admin@admin.com');
+    const [email, setEmail] = useState('gabriel@teste.com');
     const [password, setPassword] = useState('123123');
     const [loginStatus, setLoginStatus] = useState<number>();
     const [loading, setLoading] = useState(false);

@@ -3,21 +3,10 @@ import { Header } from "../components/utils/Header";
 import { FaPlus, FaFilter, FaCheck, FaTimes, FaInfoCircle, FaUser, FaCalendar, FaCreditCard } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
 import { useAppointments } from "../contexts/AppointmentContext";
-import { Appointment, AppointmentStatus } from "../types/appointment";
-
-// Tipos para os agendamentos
-// type Appointment = {
-//   id: number;
-//   customer: {
-//     name: string;
-//   };
-//   appointment_date: string;
-//   appointment_time: string;
-//   estimated_duration: string;
-//   status: "pending" | "completed" | "canceled";
-//   payment_method?: "credit_card" | "debit_card" | "cash" | "pix"; // Método de pagamento
-//   assigned_to?: string; // Usuário responsável (para administradores)
-// };
+import { Appointment, AppointmentStatus, parseAppointmentStatus } from "../types/appointment";
+import { Modal } from "../components/utils/Modal";
+import { DoneDialog } from "../components/Appointments/DoneDialog";
+import { ToastContainer, toast } from "react-toastify";
 
 export const Appointments = () => {
   const [filter, setFilter] = useState("all");
@@ -27,25 +16,31 @@ export const Appointments = () => {
   const [loading, setLoading] = useState(true);
   const [userFilter, setUserFilter] = useState<string>("");
   const [paymentFilter, setPaymentFilter] = useState<"all" | "credit_card" | "debit_card" | "money" | "pix">("all");
-  const {user} = useAuth();
-  const {getAppointmentsApi, appointments} = useAppointments();
+  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null); // Agendamento selecionado para conclusão
+  const { user } = useAuth();
+  const { getAppointmentsApi, appointments, refreshAppointments, setRefreshAppointments } = useAppointments();
+  const notify = ({type, message}: {type:  "success" | "error" | "info" | "warning", message: string}) => {
+    toast[type](message);
+  };
 
 
   useEffect(() => {
     const fetchAppointments = async () => {
-      const token: string = localStorage.getItem('token') as string;
+      if (!refreshAppointments) setLoading(true);
+  
+      const token: string = localStorage.getItem("token") as string;
       try {
         await getAppointmentsApi(token);
       } catch (err) {
         setError(err);
       } finally {
         setLoading(false);
-        setRefreshing(false);
+        setRefreshAppointments(false);
       }
     };
-
+  
     fetchAppointments();
-  }, []);
+  }, [refreshAppointments]);
 
   const filteredAppointments = appointments.filter((appointment: Appointment) => {
     const matchesStatus = filter === "all" || appointment.status === filter;
@@ -60,6 +55,7 @@ export const Appointments = () => {
     <section className="min-h-screen bg-gradient-to-b from-[#643f23] to-[#ffecb9] p-4 pt-24">
       <Header />
 
+      {/* Botão de Incluir Atendimento */}
       <div className="container mx-auto mb-6">
         <button className="w-full md:w-auto bg-areia text-marrom-escuro font-bold py-2 px-4 rounded-lg hover:bg-pele transition-colors flex items-center justify-center">
           <FaPlus className="mr-2" />
@@ -67,6 +63,7 @@ export const Appointments = () => {
         </button>
       </div>
 
+      {/* Filtros */}
       <div className="container mx-auto mb-6">
         <div className="flex flex-wrap gap-2">
           <button
@@ -112,41 +109,37 @@ export const Appointments = () => {
             <FaCalendar className="absolute right-3 text-marrom-escuro" />
           </div>
 
-            {
-              user.role == 'Administrador' ? (
-                <>
-                  <div className="relative flex items-center">
-                    <select
-                      value={userFilter}
-                      onChange={(e) => setUserFilter(e.target.value)}
-                      className="px-4 py-2 rounded-lg bg-claro text-marrom-escuro focus:outline-none focus:ring-2 focus:ring-areia"
-                    >
-                      <option value="">Todos os Usuários</option>
-                      <option value="Admin 1">Admin 1</option>
-                      <option value="Admin 2">Admin 2</option>
-                    </select>
-                    <FaUser className="absolute right-3 text-marrom-escuro" />
-                  </div>
+          {user.role === 'Administrador' && (
+            <>
+              <div className="relative flex items-center">
+                <select
+                  value={userFilter}
+                  onChange={(e) => setUserFilter(e.target.value)}
+                  className="px-4 py-2 rounded-lg bg-claro text-marrom-escuro focus:outline-none focus:ring-2 focus:ring-areia"
+                >
+                  <option value="">Todos os Usuários</option>
+                  <option value="Admin 1">Admin 1</option>
+                  <option value="Admin 2">Admin 2</option>
+                </select>
+                <FaUser className="absolute right-3 text-marrom-escuro" />
+              </div>
 
-                  <div className="relative flex items-center">
-                    <select
-                      value={paymentFilter}
-                      onChange={(e) => setPaymentFilter(e.target.value as "all" | "credit_card" | "debit_card" | "money" | "pix")}
-                      className="px-4 py-2 rounded-lg bg-claro text-marrom-escuro focus:outline-none focus:ring-2 focus:ring-areia"
-                    >
-                      <option value="all">Todos os Métodos</option>
-                      <option value="credit_card">Cartão de Crédito</option>
-                      <option value="debit_card">Cartão de Débito</option>
-                      <option value="money">Dinheiro</option>
-                      <option value="pix">PIX</option>
-                    </select>
-                    <FaCreditCard className="absolute right-3 text-marrom-escuro" />
-                  </div>
-                </>
-              ) : (
-                  ''
-              )
-            }
+              <div className="relative flex items-center">
+                <select
+                  value={paymentFilter}
+                  onChange={(e) => setPaymentFilter(e.target.value as "all" | "credit_card" | "debit_card" | "money" | "pix")}
+                  className="px-4 py-2 rounded-lg bg-claro text-marrom-escuro focus:outline-none focus:ring-2 focus:ring-areia"
+                >
+                  <option value="all">Todos os Métodos</option>
+                  <option value="credit_card">Cartão de Crédito</option>
+                  <option value="debit_card">Cartão de Débito</option>
+                  <option value="money">Dinheiro</option>
+                  <option value="pix">PIX</option>
+                </select>
+                <FaCreditCard className="absolute right-3 text-marrom-escuro" />
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -175,11 +168,13 @@ export const Appointments = () => {
                 )}
               </div>
 
-              {/* Ações */}
               <div className="flex flex-wrap gap-2">
-                {appointment.status === AppointmentStatus.pending && (
+                {parseAppointmentStatus(appointment.status) === AppointmentStatus.pending && (
                   <>
-                    <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors flex items-center">
+                    <button
+                      onClick={() => setSelectedAppointment(appointment)}
+                      className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors flex items-center"
+                    >
                       <FaCheck className="mr-2" />
                       Concluir
                     </button>
@@ -198,6 +193,11 @@ export const Appointments = () => {
           ))}
         </div>
       </div>
+
+      {selectedAppointment && (
+        <DoneDialog cancel_method={setSelectedAppointment} appointment={selectedAppointment}/>
+      )}
+      <ToastContainer />
     </section>
   );
 };

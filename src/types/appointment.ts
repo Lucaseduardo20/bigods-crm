@@ -1,7 +1,9 @@
 export type AppointmentContextType = {
     appointments: Appointment[];
     setAppointments: () => void;
-    getAppointmentsApi: (token: string) => any
+    getAppointmentsApi: (token: string) => any,
+    refreshAppointments: boolean,
+    setRefreshAppointments: (refreshingAppointments: boolean) => void
 
 }
 
@@ -44,4 +46,18 @@ export interface DoneAppointmentType {
 export interface CancelAppointmentType {
     id: number,
     reason: string
+}
+
+//resolve types functions 
+
+const appointmentStatusMap: Record<string, AppointmentStatus> = {
+    pending: AppointmentStatus.pending,
+    scheduled: AppointmentStatus.scheduled,
+    canceled: AppointmentStatus.canceled,
+    done: AppointmentStatus.done,
+};
+
+
+export function parseAppointmentStatus(status: string): AppointmentStatus {
+    return appointmentStatusMap[status] || AppointmentStatus.pending;
 }
