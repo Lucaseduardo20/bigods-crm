@@ -1,7 +1,7 @@
 export type AppointmentContextType = {
     appointments: Appointment[];
     setAppointments: () => void;
-    getAppointmentsApi: (token: string) => any,
+    getAppointmentsApi: () => any,
     refreshAppointments: boolean,
     setRefreshAppointments: (refreshingAppointments: boolean) => void
 
@@ -38,7 +38,6 @@ export enum AppointmentPaymentMethod {
 }
 
 export interface DoneAppointmentType {
-    token: string | null,
     id: number,
     payment_method: AppointmentPaymentMethod
 }

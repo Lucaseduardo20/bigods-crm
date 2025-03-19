@@ -7,6 +7,8 @@ import { Appointment, AppointmentStatus, parseAppointmentStatus } from "../types
 import { Modal } from "../components/utils/Modal";
 import { DoneDialog } from "../components/Appointments/DoneDialog";
 import { ToastContainer, toast } from "react-toastify";
+import { NotifyType } from "../types/global";
+import { CancelDialog } from "../components/Appointments/CancelDialog";
 
 export const Appointments = () => {
   const [filter, setFilter] = useState("all");
@@ -16,10 +18,11 @@ export const Appointments = () => {
   const [loading, setLoading] = useState(true);
   const [userFilter, setUserFilter] = useState<string>("");
   const [paymentFilter, setPaymentFilter] = useState<"all" | "credit_card" | "debit_card" | "money" | "pix">("all");
-  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null); // Agendamento selecionado para conclusão
+  const [doneAppointment, setDoneAppointment] = useState<Appointment | null>(null);
+  const [cancelAppointment, setCancelAppointment] = useState<Appointment | null>(null);
   const { user } = useAuth();
   const { getAppointmentsApi, appointments, refreshAppointments, setRefreshAppointments } = useAppointments();
-  const notify = ({type, message}: {type:  "success" | "error" | "info" | "warning", message: string}) => {
+  const notify: NotifyType = (type, message) => {
     toast[type](message);
   };
 
@@ -27,10 +30,9 @@ export const Appointments = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       if (!refreshAppointments) setLoading(true);
-  
-      const token: string = localStorage.getItem("token") as string;
+      
       try {
-        await getAppointmentsApi(token);
+        await getAppointmentsApi();
       } catch (err) {
         setError(err);
       } finally {
@@ -172,13 +174,16 @@ export const Appointments = () => {
                 {parseAppointmentStatus(appointment.status) === AppointmentStatus.pending && (
                   <>
                     <button
-                      onClick={() => setSelectedAppointment(appointment)}
+                      onClick={() => setDoneAppointment(appointment)}
                       className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors flex items-center"
                     >
                       <FaCheck className="mr-2" />
                       Concluir
                     </button>
-                    <button className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors flex items-center">
+                    <button 
+                      onClick={() => setCancelAppointment(appointment)}
+                      className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors flex items-center"
+                    >
                       <FaTimes className="mr-2" />
                       Cancelar
                     </button>
@@ -194,8 +199,11 @@ export const Appointments = () => {
         </div>
       </div>
 
-      {selectedAppointment && (
-        <DoneDialog cancel_method={setSelectedAppointment} appointment={selectedAppointment}/>
+      {doneAppointment && (
+        <DoneDialog cancel_method={setDoneAppointment} appointment={doneAppointment} notify={notify}/>
+      )}
+      {cancelAppointment && (
+        <CancelDialog cancel_method={setCancelAppointment} appointment={cancelAppointment} notify={notify}/>
       )}
       <ToastContainer />
     </section>

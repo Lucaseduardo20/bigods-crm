@@ -1,21 +1,19 @@
 import { useState } from "react";
 import { Modal } from "../utils/Modal";
 import { doneAppointmentService } from "../../services/appointment";
-import { AppointmentPaymentMethod } from "../../types/appointment";
+import { Appointment, AppointmentPaymentMethod } from "../../types/appointment";
 import { ToastContainer, toast } from "react-toastify";
 import { useAppointments } from "../../contexts/AppointmentContext";
+import { DoneDialogProps } from "../../types/global";
 
-export const DoneDialog = ({cancel_method, appointment}: any) => {
+
+export const DoneDialog = ({cancel_method, appointment, notify}: DoneDialogProps) => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<AppointmentPaymentMethod>(AppointmentPaymentMethod.credit_card);
-  const notify = (type: "success" | "error" | "info" | "warning", message: string) => {
-    toast[type](message);
-  };
+
   const {refreshAppointments, setRefreshAppointments} = useAppointments();
   
     const setMethod = async () => {
-      const token = localStorage.getItem('token');
       await doneAppointmentService({
-        token: token,
         id: appointment.id,
         payment_method: selectedPaymentMethod
       }).then((res: any) => {
@@ -89,7 +87,6 @@ export const DoneDialog = ({cancel_method, appointment}: any) => {
           </button>
         </div>
       </div>
-      <ToastContainer />
     </Modal>
   )
 }
