@@ -1,3 +1,5 @@
+import { NotifyType } from "./global";
+
 export type AppointmentContextType = {
     appointments: Appointment[];
     setAppointments: () => void;
@@ -14,8 +16,14 @@ export type Appointment = {
     appointment_time: string,
     status: AppointmentStatus,
     assigned_to?: string,
+    services: Service[],
     payment_method?: AppointmentPaymentMethod,
     estimated_time: string
+}
+
+export type Service = {
+    price: number,
+    name: string
 }
 
 export type Customer = {
@@ -46,6 +54,12 @@ export interface CancelAppointmentType {
     id: number,
     reason: string
 }
+
+export type AppointmentDialogProps = {
+    cancel_method: (appointment: Appointment | null) => void,
+    appointment: Appointment,
+    notify: NotifyType
+  }
 
 //resolve types functions 
 

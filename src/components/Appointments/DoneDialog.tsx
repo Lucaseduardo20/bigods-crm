@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Modal } from "../utils/Modal";
 import { doneAppointmentService } from "../../services/appointment";
-import { Appointment, AppointmentPaymentMethod } from "../../types/appointment";
+import { Appointment, AppointmentDialogProps, AppointmentPaymentMethod } from "../../types/appointment";
 import { ToastContainer, toast } from "react-toastify";
 import { useAppointments } from "../../contexts/AppointmentContext";
-import { DoneDialogProps } from "../../types/global";
 
 
-export const DoneDialog = ({cancel_method, appointment, notify}: DoneDialogProps) => {
+export const DoneDialog = ({cancel_method, appointment, notify}: AppointmentDialogProps) => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<AppointmentPaymentMethod>(AppointmentPaymentMethod.credit_card);
 
   const {refreshAppointments, setRefreshAppointments} = useAppointments();

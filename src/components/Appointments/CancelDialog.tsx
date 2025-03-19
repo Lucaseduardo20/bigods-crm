@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Modal } from "../utils/Modal";
 import { cancelAppointmentService } from "../../services/appointment";
+import { AppointmentDialogProps } from "../../types/appointment";
 
-export const CancelDialog = ({ cancel_method, appointment, notify }: any) => {
+export const CancelDialog = ({ cancel_method, appointment, notify }: AppointmentDialogProps) => {
   const [cancelReason, setCancelReason] = useState("");
 
   const handleCancel = async () => {

@@ -9,6 +9,7 @@ import { DoneDialog } from "../components/Appointments/DoneDialog";
 import { ToastContainer, toast } from "react-toastify";
 import { NotifyType } from "../types/global";
 import { CancelDialog } from "../components/Appointments/CancelDialog";
+import { DetailsDialog } from "../components/Appointments/DetailsDialog";
 
 export const Appointments = () => {
   const [filter, setFilter] = useState("all");
@@ -20,6 +21,8 @@ export const Appointments = () => {
   const [paymentFilter, setPaymentFilter] = useState<"all" | "credit_card" | "debit_card" | "money" | "pix">("all");
   const [doneAppointment, setDoneAppointment] = useState<Appointment | null>(null);
   const [cancelAppointment, setCancelAppointment] = useState<Appointment | null>(null);
+  const [detailsAppointment, setDetailsAppointment] = useState<Appointment | null>(null);
+
   const { user } = useAuth();
   const { getAppointmentsApi, appointments, refreshAppointments, setRefreshAppointments } = useAppointments();
   const notify: NotifyType = (type, message) => {
@@ -189,7 +192,9 @@ export const Appointments = () => {
                     </button>
                   </>
                 )}
-                <button className="bg-areia text-marrom-escuro px-4 py-2 rounded-lg hover:bg-pele transition-colors flex items-center">
+                <button className="bg-areia text-marrom-escuro px-4 py-2 rounded-lg hover:bg-pele transition-colors flex items-center"
+                  onClick={() => setDetailsAppointment(appointment)}
+                >
                   <FaInfoCircle className="mr-2" />
                   Detalhes
                 </button>
@@ -204,6 +209,9 @@ export const Appointments = () => {
       )}
       {cancelAppointment && (
         <CancelDialog cancel_method={setCancelAppointment} appointment={cancelAppointment} notify={notify}/>
+      )}
+      {detailsAppointment && (
+        <DetailsDialog cancel_method={setDetailsAppointment} appointment={detailsAppointment} notify={notify}/>
       )}
       <ToastContainer />
     </section>

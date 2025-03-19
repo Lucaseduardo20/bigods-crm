@@ -6,6 +6,9 @@ import { previewService } from "../services/user";
 import { Appointment } from "../types/appointment";
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { Header } from "../components/utils/Header";
+import { NotifyType } from "../types/global";
+import { toast } from "react-toastify";
+import { DetailsDialog } from "../components/Appointments/DetailsDialog";
 
 export const Home = () => {
   const { isAuthenticated, user } = useAuth(); 
@@ -14,6 +17,11 @@ export const Home = () => {
   const [appointmentsCount, setAppointmentsCount] = useState<number>();
   const [commission, setCommission] = useState<number>();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [detailsAppointment, setDetailsAppointment] = useState<Appointment | null>(null);
+    const notify: NotifyType = (type, message) => {
+      toast[type](message);
+    };
+  
 
   useEffect(() => {
     const checkAndFetchData = async () => {
@@ -88,7 +96,10 @@ export const Home = () => {
                       {appointment.appointment_date} às {appointment.appointment_time}
                     </p>
                   </div>
-                  <button className="bg-areia text-marrom-escuro px-4 py-2 rounded-lg hover:bg-pele transition-colors">
+                  <button 
+                    onClick={() => setDetailsAppointment(appointment)}
+                    className="bg-areia text-marrom-escuro px-4 py-2 rounded-lg hover:bg-pele transition-colors"
+                  >
                     Detalhes
                   </button>
                 </div>
@@ -96,6 +107,10 @@ export const Home = () => {
             ))}
           </ul>
         </div>
+
+      {detailsAppointment && (
+        <DetailsDialog cancel_method={setDetailsAppointment} appointment={detailsAppointment} notify={notify}/>
+      )}
       </main>
     </section>
   );
