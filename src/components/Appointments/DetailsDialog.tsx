@@ -1,16 +1,14 @@
-import { AppointmentDialogProps, AppointmentStatus, parseAppointmentStatus } from "../../types/appointment"
+import { AppointmentDialogProps, AppointmentStatus, getPaymentMethodLabel, parseAppointmentStatus } from "../../types/appointment"
 import { Modal } from "../utils/Modal"
 
 export const DetailsDialog = ({cancel_method, appointment, notify}: AppointmentDialogProps) => {
   return (
     <Modal>
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-        {/* Título */}
         <h3 className="text-xl font-bold text-marrom-escuro mb-4">
           Detalhes do Agendamento
         </h3>
 
-        {/* Informações do Cliente */}
         <div className="mb-6">
           <h4 className="text-lg font-semibold text-marrom-escuro mb-2">
             Cliente
@@ -23,7 +21,6 @@ export const DetailsDialog = ({cancel_method, appointment, notify}: AppointmentD
           </p>
         </div>
 
-        {/* Serviços */}
         <div className="mb-6">
           <h4 className="text-lg font-semibold text-marrom-escuro mb-2">
             Serviços
@@ -42,7 +39,6 @@ export const DetailsDialog = ({cancel_method, appointment, notify}: AppointmentD
           </p>
         </div>
 
-        {/* Status do Atendimento */}
         <div className="mb-6">
           <h4 className="text-lg font-semibold text-marrom-escuro mb-2">
             Status do Atendimento
@@ -66,7 +62,6 @@ export const DetailsDialog = ({cancel_method, appointment, notify}: AppointmentD
           </p>
         </div>
 
-        {/* Data e Hora */}
         <div className="mb-6">
           <h4 className="text-lg font-semibold text-marrom-escuro mb-2">
             Data e Hora
@@ -75,8 +70,17 @@ export const DetailsDialog = ({cancel_method, appointment, notify}: AppointmentD
             {appointment.appointment_date} às {appointment.appointment_time}
           </p>
         </div>
+        {parseAppointmentStatus(appointment.status) === AppointmentStatus.done &&
+          <div className="mb-6">
+            <h4 className="text-lg font-semibold text-marrom-escuro mb-2">
+              Forma de Pagamento
+            </h4>
+            <p className="text-marrom-claro">
+              {appointment.payment_method ? getPaymentMethodLabel(appointment.payment_method) : ''}
+            </p>
+          </div>
+        }
 
-        {/* Botão de Fechar */}
         <div className="flex justify-end">
           <button
             onClick={() => cancel_method(null)}

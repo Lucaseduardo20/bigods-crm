@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import LogoLight from '../assets/logo-light.png'
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { NotifyType } from '../types/global';
+import { toast, ToastContainer } from 'react-toastify';
 
 
 export const Login: React.FC = () => {
@@ -11,6 +13,9 @@ export const Login: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const { login, isAuthenticated, setIsAuthenticated, setUser } = useAuth();
     const navigate = useNavigate();
+    const notify: NotifyType = (type, message) => {
+      toast[type](message);
+    };
 
 
     const handleLogin = async (e: any) => {
@@ -20,13 +25,14 @@ export const Login: React.FC = () => {
           const response: any = await login({ email, password });
           
           if (response && response.status === 200) {
+            notify('success', 'Login efetuado com sucesso!');
             setLoginStatus(response.status);
             setTimeout(() => {
-              setLoading(false);
               setIsAuthenticated(true);
+              navigate('/home');
+              setLoading(false);
               setUser(response.data.user);
               localStorage.setItem('user', JSON.stringify(response.data.user));
-              navigate('/home');
             }, 2000);
           } else if (response && response.status === 401) {
             setLoginStatus(401);
@@ -35,8 +41,6 @@ export const Login: React.FC = () => {
           }
         } catch (error) {
           setLoginStatus(500); 
-        } finally {
-          setLoading(false);
         }
       };
 
@@ -83,14 +87,16 @@ export const Login: React.FC = () => {
             </div>
 
             <button
+              disabled={loading}
               onClick={(e) => handleLogin(e)}
               className="w-full bg-areia text-marrom-escuro font-bold py-2 px-4 rounded-lg hover:cursor-pointer hover:bg-pele transition-hover"
             >
-              Entrar
+              {!loading ? 'Entrar' : 'Carregando...'}
             </button>
           </form>
         </div>
       </article>
+      <ToastContainer />
     </section>
   );
 };

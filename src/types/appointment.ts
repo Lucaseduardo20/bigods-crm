@@ -70,7 +70,23 @@ const appointmentStatusMap: Record<string, AppointmentStatus> = {
     done: AppointmentStatus.done,
 };
 
+const paymentMethodLabels: Record<AppointmentPaymentMethod, string> = {
+    [AppointmentPaymentMethod.pix]: "PIX",
+    [AppointmentPaymentMethod.credit_card]: "Cartão de Crédito",
+    [AppointmentPaymentMethod.debit]: "Cartão de Débito",
+    [AppointmentPaymentMethod.money]: "Dinheiro",
+};
+
 
 export function parseAppointmentStatus(status: string): AppointmentStatus {
     return appointmentStatusMap[status] || AppointmentStatus.pending;
+}
+
+export function getPaymentMethodLabel(method: AppointmentPaymentMethod | string): string {
+    const normalizedMethod = 
+        typeof method === 'string' 
+            ? (AppointmentPaymentMethod[method as keyof typeof AppointmentPaymentMethod] || AppointmentPaymentMethod.pix)
+            : method;
+    
+    return paymentMethodLabels[normalizedMethod] || "Método desconhecido";
 }
