@@ -1,12 +1,12 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { loginService } from '../services/auth';
-import { loginData } from '../types/auth';
+import { loginData, UserType } from '../types/auth';
 
 interface AuthContextData {
   isAuthenticated: boolean;
   setIsAuthenticated: (isAuthenticated: boolean) => void,
-  user: any,
-  setUser: (user: any) => void
+  user: UserType,
+  setUser: (user: UserType) => void
   login: (data: loginData) => Promise<void>;
   logout: () => void;
 }
@@ -15,7 +15,7 @@ const AuthContext = createContext<AuthContextData | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<UserType>({} as UserType);
 
   const login = async (data: loginData) => {
     try {
@@ -32,7 +32,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     setIsAuthenticated(false);
+    setUser({} as UserType);
     await localStorage.setItem('token', '');
+    await localStorage.setItem('user', '');
   };
 
   

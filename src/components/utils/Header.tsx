@@ -91,13 +91,14 @@ export const Header = () => {
           </li>
 
           <li>
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 bg-marrom-escuro text-white py-3 px-4 rounded-lg hover:bg-marrom-claro transition-colors"
-          >
-            <FaSignOutAlt />
-            Sair da conta
-          </button>
+            <div className='w-full flex justify-end'>
+              <button
+                onClick={handleLogout}
+                className=" flex items-center justify-center gap-2 bg-marrom-escuro text-white py-3 px-4 rounded-lg hover:bg-marrom-claro transition-colors"
+              >
+                <FaSignOutAlt />
+              </button>
+            </div>
           </li>
         </ul>
       </nav>

@@ -40,7 +40,7 @@ export const Profile = () => {
             </h1>
             <p className="text-marrom-claro mb-2">{user?.role || "Cargo"}</p>
             <p className="text-marrom-escuro font-medium">
-              {user?.barbershop || "Barbearia não vinculada"}
+              {user?.company_name || "Barbearia não vinculada"}
             </p>
           </div>
 
