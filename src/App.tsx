@@ -5,6 +5,7 @@ import { AppointmentProvider, useAppointments } from './contexts/AppointmentCont
 import { Login } from './pages/Login'
 import { Home } from './pages/Home';
 import { Appointments } from './pages/Appointments';
+import { Profile } from './pages/Profile';
 
 
 function App() {
@@ -16,7 +17,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/Appointments" element={<Appointments />} />
+          <Route path="/appointments" element={<Appointments />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </Router>
       </AppointmentProvider>

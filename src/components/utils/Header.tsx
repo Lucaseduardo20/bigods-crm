@@ -30,12 +30,12 @@ export const Header = () => {
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-areia transition-colors">
+              <a href="/appointments" className="hover:text-areia transition-colors">
                 Agendamentos
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-areia transition-colors">
+              <a href="/profile" className="hover:text-areia transition-colors">
                 Perfil
               </a>
             </li>
@@ -64,7 +64,7 @@ export const Header = () => {
             </a>
           </li>
           <li>
-            <a href="#" className="text-marrom-escuro hover:text-areia transition-colors">
+            <a href="/profile" className="text-marrom-escuro hover:text-areia transition-colors">
               Perfil
             </a>
           </li>
