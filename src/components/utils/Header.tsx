@@ -1,10 +1,23 @@
 import { useState } from 'react';
 import Logo from '../../assets/logo-light-sem-subtitulo.png'
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaSignOutAlt, FaTimes } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const {logout} = useAuth();
+  const navigate = useNavigate();
+
+
+    const handleLogout = () => {
+      logout();
+      toast.success("Logout realizado com sucesso!");
+      navigate("/");
+    };
+  
 
   return (
     <header className="fixed top-0 left-0 w-full bg-marrom-escuro text-claro p-4 z-50">
@@ -23,7 +36,7 @@ export const Header = () => {
         </button>
 
         <nav className="hidden md:block">
-          <ul className="flex space-x-4">
+          <ul className="flex space-x-4 items-center">
             <li>
               <a href="/home" className="hover:text-areia transition-colors">
                 Início
@@ -40,10 +53,18 @@ export const Header = () => {
               </a>
             </li>
             <li>
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center justify-center gap-2 bg-marrom-escuro text-white py-3 px-4 rounded-lg hover:bg-marrom-claro transition-colors"
+              >
+                <FaSignOutAlt />
+              </button>
+            </li>
+            {/* <li>
               <a href="#" className="hover:text-areia transition-colors">
                 Sair
               </a>
-            </li>
+            </li> */}
           </ul>
         </nav>
       </div>
@@ -68,10 +89,15 @@ export const Header = () => {
               Perfil
             </a>
           </li>
+
           <li>
-            <a href="#" className="text-marrom-escuro hover:text-areia transition-colors">
-              Sair
-            </a>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center gap-2 bg-marrom-escuro text-white py-3 px-4 rounded-lg hover:bg-marrom-claro transition-colors"
+          >
+            <FaSignOutAlt />
+            Sair da conta
+          </button>
           </li>
         </ul>
       </nav>
