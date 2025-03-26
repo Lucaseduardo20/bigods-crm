@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { loginService } from '../services/auth';
-import { loginData, UserType } from '../types/auth';
+import { loginData } from '../types/auth';
+import { UserType } from '../types/user';
 
 interface AuthContextData {
   isAuthenticated: boolean;

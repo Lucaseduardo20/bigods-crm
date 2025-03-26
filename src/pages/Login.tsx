@@ -7,7 +7,7 @@ import { toast, ToastContainer } from 'react-toastify';
 
 
 export const Login: React.FC = () => {
-    const [email, setEmail] = useState('gabriel@teste.com');
+    const [email, setEmail] = useState('admin@admin.com');
     const [password, setPassword] = useState('123123');
     const [loginStatus, setLoginStatus] = useState<number>();
     const [loading, setLoading] = useState(false);
