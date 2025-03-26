@@ -6,6 +6,7 @@ import { Login } from './pages/Login'
 import { Home } from './pages/Home';
 import { Appointments } from './pages/Appointments';
 import { Profile } from './pages/Profile';
+import { ScheduleSettings } from './pages/ScheduleSettings';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/appointments" element={<Appointments />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/schedule" element={<ScheduleSettings />} />
         </Routes>
       </Router>
       </AppointmentProvider>
