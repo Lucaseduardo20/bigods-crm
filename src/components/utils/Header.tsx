@@ -44,17 +44,17 @@ export const Header = () => {
             </li>
             <li>
               <a href="/appointments" className="hover:text-areia transition-colors">
-                Agendamentos
+                Meus Agendamentos
+              </a>
+            </li>
+            <li>
+              <a href="/schedule" className="hover:text-areia transition-colors">
+                Meu Horário.
               </a>
             </li>
             <li>
               <a href="/profile" className="hover:text-areia transition-colors">
                 Perfil
-              </a>
-            </li>
-            <li>
-              <a href="/schedule" className="hover:text-areia transition-colors">
-                Horário de Atendimento
               </a>
             </li>
             <li>
@@ -86,17 +86,17 @@ export const Header = () => {
           </li>
           <li>
             <a href="/appointments" className="text-marrom-escuro hover:text-areia transition-colors">
-              Agendamentos
+              Meus Agendamentos
+            </a>
+          </li>
+          <li>
+            <a href="/schedule" className="text-marrom-escuro hover:text-areia transition-colors">
+              Meu Horário.
             </a>
           </li>
           <li>
             <a href="/profile" className="text-marrom-escuro hover:text-areia transition-colors">
               Perfil
-            </a>
-          </li>
-          <li>
-            <a href="/schedule" className="text-marrom-escuro hover:text-areia transition-colors">
-              Horário de Atendimento
             </a>
           </li>
 
