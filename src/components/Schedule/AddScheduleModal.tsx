@@ -3,6 +3,8 @@ import { AddScheduleModalProps } from "../../types/schedule";
 import { toast } from "react-toastify";
 import { FiCalendar } from "react-icons/fi";
 import { storeAvailableSchedule } from "../../services/user";
+import { useAuth } from "../../contexts/UserContext";
+import { Loading } from "../utils/Loading";
 
 
 
@@ -11,18 +13,19 @@ export const AddScheduleModal = ({ onClose }: AddScheduleModalProps) => {
     const [startTime, setStartTime] = useState("09:00");
     const [endTime, setEndTime] = useState("12:00");
     const [loading, setLoading] = useState(false);
+    const { setRefreshSchedules, refreshSchedules } = useAuth();
 
     const handleSubmit = async () => {
         if (!date) {
             toast.error("Selecione uma data");
             return;
         }
-        
+
         if (!startTime || !endTime) {
             toast.error("Preencha ambos os horários");
             return;
         }
-        
+
         if (startTime >= endTime) {
             toast.error("O horário final deve ser após o inicial");
             return;
@@ -43,10 +46,8 @@ export const AddScheduleModal = ({ onClose }: AddScheduleModalProps) => {
             }
 
             toast.success("Horários atualizados com sucesso!");
-            setTimeout(() => {
-                onClose();
-
-            }, 2000)
+            onClose();
+            setRefreshSchedules(!refreshSchedules);
         } catch (error) {
             setLoading(false);
             toast.error("Erro ao salvar horários");
@@ -103,10 +104,15 @@ export const AddScheduleModal = ({ onClose }: AddScheduleModalProps) => {
                         Cancelar
                     </button>
                     <button
+                        disabled={loading}
                         onClick={handleSubmit}
                         className="px-4 py-2 bg-marrom-escuro text-white rounded-lg hover:bg-areia transition-colors"
                     >
-                        {!loading ? 'Adicionar' : 'Carregando...'}
+                        {!loading ? 'Adicionar' : (
+                            <div className="flex justify-center">
+                                <Loading size="small" color="white"/>
+                            </div>
+                        )}
                     </button>
                 </div>
             </div>

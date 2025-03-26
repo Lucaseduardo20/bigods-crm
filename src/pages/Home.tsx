@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import Logo from '../assets/logo-light-sem-subtitulo.png'
 import { previewService } from "../services/user";

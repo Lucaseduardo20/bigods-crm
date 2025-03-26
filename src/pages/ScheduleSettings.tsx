@@ -1,24 +1,26 @@
 import { useEffect, useRef, useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../components/utils/Header";
 import { Modal } from "../components/utils/Modal";
 import { toast } from "react-toastify";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus, FiClock } from "react-icons/fi";
 import { getSchedulesService, storeAvailableSchedule } from "../services/user";
 import { AddScheduleModal } from "../components/Schedule/AddScheduleModal";
 import { ScheduleList } from "../components/Schedule/ScheduleList";
 import { DateSchedule } from "../types/schedule";
 import { SubmitButton } from "../components/Schedule/ScheduleSubmitButton";
 import { ToastContainer } from "react-toastify";
+import {Loading} from '../components/utils/Loading'
 
 export const ScheduleSettings = () => {
-    const { user } = useAuth();
+    const { user, refreshSchedules } = useAuth();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [schedules, setSchedules] = useState<DateSchedule[]>([]);
     const [localSchedules, setLocalSchedules] = useState<DateSchedule[]>([]);
+    const [isFetching, setIsFetching] = useState(true);
     const hasFetched = useRef(false);
 
     const formatDate = (dateString: string): string => {
@@ -31,29 +33,8 @@ export const ScheduleSettings = () => {
         return formattedDate.toLocaleDateString('pt-BR', options);
     };
 
-    // const handleAddSchedule = (newSchedule: DateSchedule) => {
-    //     setLocalSchedules(prev => {
-    //         const existingIndex = prev.findIndex(s => s.date === newSchedule.date);
-    //         if (existingIndex >= 0) {
-    //             const updated = [...prev];
-    //             updated[existingIndex].periods.push(...newSchedule.periods);
-    //             return updated;
-    //         }
-    //         return [...prev, newSchedule];
-    //     });
-    //     setIsModalOpen(false);
-    // };
-
-    const handleSubmit = async () => {
-        if (localSchedules.length === 0) {
-            toast.error("Adicione pelo menos um horário");
-            return;
-        }
-
-        setIsLoading(true);
-    };
-
     const getSchedules = async () => {
+        setIsFetching(true);
         try {
             const response = await getSchedulesService();
             if (response.status !== 200) {
@@ -63,13 +44,17 @@ export const ScheduleSettings = () => {
             setLocalSchedules(response.data.data);
         } catch (error) {
             toast.error('Não foi possível listar seus horários');
+        } finally {
+            setIsFetching(false);
         }
     };
 
     useEffect(() => {
-
         getSchedules();
     }, []);
+    useEffect(() => {
+        getSchedules();
+    }, [refreshSchedules])
 
     return (
         <section className="min-h-screen bg-gradient-to-b from-[#643f23] to-[#ffecb9] p-4 pt-24">
@@ -89,23 +74,27 @@ export const ScheduleSettings = () => {
                         </button>
                     </div>
 
-                    <ScheduleList
-                        schedules={schedules}
-                        formatDate={formatDate}
-                    />
-
-                    {/* <SubmitButton
-                        isLoading={isLoading}
-                        disabled={localSchedules.length === 0}
-                        onClick={handleSubmit}
-                    /> */}
+                    {isFetching ? (
+                        <div className="flex justify-center py-8">
+                            <Loading size="large" />
+                        </div>
+                    ) : schedules.length === 0 ? (
+                        <div className="text-center py-8">
+                            <FiClock className="mx-auto text-4xl text-marrom-claro mb-4" />
+                            <p className="text-marrom-escuro font-medium">Nenhum horário cadastrado</p>
+                            <p className="text-marrom-claro mt-2">Adicione seu primeiro horário clicando no botão acima</p>
+                        </div>
+                    ) : (
+                        <ScheduleList
+                            schedules={schedules}
+                            formatDate={formatDate}
+                        />
+                    )}
                 </div>
             </main>
 
-
             {isModalOpen &&
-
-                <Modal >
+                <Modal>
                     <AddScheduleModal
                         setLoading={setIsLoading}
                         onClose={() => setIsModalOpen(false)}
@@ -117,6 +106,3 @@ export const ScheduleSettings = () => {
         </section>
     );
 };
-
-
-

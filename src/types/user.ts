@@ -13,5 +13,5 @@ export type UserSchedule = {
     date: string,
     start_time: string,
     end_time: string,
-    periods: TimeRanges[]
+    periods?: TimeRanges[]
 }

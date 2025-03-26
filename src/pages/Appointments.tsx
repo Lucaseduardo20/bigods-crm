@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Header } from "../components/utils/Header";
 import { FaPlus, FaFilter, FaCheck, FaTimes, FaInfoCircle, FaUser, FaCalendar, FaCreditCard } from "react-icons/fa";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/UserContext";
 import { useAppointments } from "../contexts/AppointmentContext";
 import { Appointment, AppointmentStatus, parseAppointmentStatus } from "../types/appointment";
 import { Modal } from "../components/utils/Modal";

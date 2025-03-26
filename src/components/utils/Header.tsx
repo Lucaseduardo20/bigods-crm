@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Logo from '../../assets/logo-light-sem-subtitulo.png'
 import { FaBars, FaSignOutAlt, FaTimes } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
 
 

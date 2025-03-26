@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import { FaSignOutAlt, FaEdit } from "react-icons/fa";
 import { Header } from "../components/utils/Header";

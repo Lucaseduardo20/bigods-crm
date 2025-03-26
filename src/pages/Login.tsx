@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import LogoLight from '../assets/logo-light.png'
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
 import { NotifyType } from '../types/global';
 import { toast, ToastContainer } from 'react-toastify';
