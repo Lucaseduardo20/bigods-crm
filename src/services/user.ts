@@ -25,3 +25,11 @@ export const getSchedulesService = async ()=> {
         return err
     })
 } 
+
+export const deleteScheduleService = async (id: number)=> {
+    return await api.delete( '/user/available-schedules/' + id).then((res: any) => {
+        return res
+    }).catch((err: any) => {
+        return err
+    })
+} 

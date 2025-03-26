@@ -44,20 +44,6 @@ export const ScheduleSettings = () => {
     //     setIsModalOpen(false);
     // };
 
-    const handleRemovePeriod = (date: string, index: number) => {
-        setLocalSchedules(prev => {
-            const updated = prev.map(schedule => {
-                if (schedule.date === date) {
-                    const filteredPeriods = schedule.periods.filter((_, i) => i !== index);
-                    return { ...schedule, periods: filteredPeriods };
-                }
-                return schedule;
-            }).filter(schedule => schedule.periods.length > 0);
-
-            return updated;
-        });
-    };
-
     const handleSubmit = async () => {
         if (localSchedules.length === 0) {
             toast.error("Adicione pelo menos um horário");
@@ -106,7 +92,6 @@ export const ScheduleSettings = () => {
                     <ScheduleList
                         schedules={schedules}
                         formatDate={formatDate}
-                        onRemove={handleRemovePeriod}
                     />
 
                     {/* <SubmitButton

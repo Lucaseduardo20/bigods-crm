@@ -11,6 +11,7 @@ export type DateSchedule = {
 };
 
 export type TimeRange = {
+    id: number;
     start: string;
     end: string;
 };
@@ -18,12 +19,11 @@ export type TimeRange = {
 export type ScheduleListProps = {
     schedules: DateSchedule[];
     formatDate: (date: string) => string;
-    onRemove: (date: string, index: number) => void;
 };
 
 export type ScheduleItemProps = {
+    id?: number;
     period: TimeRange;
-    onRemove: () => void;
 };
 
 export type SubmitButtonProps = {

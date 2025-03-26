@@ -2,7 +2,7 @@ import { FiClock } from "react-icons/fi";
 import { ScheduleListProps } from "../../types/schedule";
 import { ScheduleItem } from "./ScheduleItem";
 
-export const ScheduleList = ({ schedules, formatDate, onRemove }: ScheduleListProps) => {
+export const ScheduleList = ({ schedules, formatDate }: ScheduleListProps) => {
 
     console.log(schedules)
     if (schedules.length === 0) {
@@ -26,7 +26,6 @@ export const ScheduleList = ({ schedules, formatDate, onRemove }: ScheduleListPr
                             <ScheduleItem
                                 key={index}
                                 period={period}
-                                onRemove={() => onRemove(schedule.date, index)}
                             />
                         ))}
                     </div>
