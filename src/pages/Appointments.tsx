@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { Header } from "../components/utils/Header";
-import { FaPlus, FaFilter, FaCheck, FaTimes, FaInfoCircle, FaUser, FaCalendar, FaCreditCard } from "react-icons/fa";
+import { FaPlus, FaCheck, FaTimes, FaInfoCircle, FaUser, FaCalendar, FaCreditCard } from "react-icons/fa";
 import { useAuth } from "../contexts/UserContext";
 import { useAppointments } from "../contexts/AppointmentContext";
 import { Appointment, AppointmentStatus, parseAppointmentStatus } from "../types/appointment";
-import { Modal } from "../components/utils/Modal";
 import { DoneDialog } from "../components/Appointments/DoneDialog";
 import { ToastContainer, toast } from "react-toastify";
 import { NotifyType } from "../types/global";
@@ -14,8 +13,6 @@ import { DetailsDialog } from "../components/Appointments/DetailsDialog";
 export const Appointments = () => {
   const [filter, setFilter] = useState("all");
   const [dateFilter, setDateFilter] = useState<string>("");
-  const [error, setError] = useState() as any;
-  const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userFilter, setUserFilter] = useState<string>("");
   const [paymentFilter, setPaymentFilter] = useState<"all" | "credit_card" | "debit_card" | "money" | "pix">("all");
@@ -36,8 +33,8 @@ export const Appointments = () => {
       
       try {
         await getAppointmentsApi();
-      } catch (err) {
-        setError(err);
+      } catch {
+        notify('error', 'Nao foi possivel carregar os agendamentos.');
       } finally {
         setLoading(false);
         setRefreshAppointments(false);
@@ -150,6 +147,11 @@ export const Appointments = () => {
 
       {/* Lista de Agendamentos */}
       <div className="container mx-auto">
+        {loading && (
+          <p className="rounded-lg bg-white p-4 text-marrom-escuro shadow-lg">
+            Carregando agendamentos...
+          </p>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredAppointments.map((appointment) => (
             <div

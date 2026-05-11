@@ -1,7 +1,7 @@
 import { AppointmentDialogProps, AppointmentStatus, getPaymentMethodLabel, parseAppointmentStatus } from "../../types/appointment"
 import { Modal } from "../utils/Modal"
 
-export const DetailsDialog = ({cancel_method, appointment, notify}: AppointmentDialogProps) => {
+export const DetailsDialog = ({cancel_method, appointment}: AppointmentDialogProps) => {
   return (
     <Modal>
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">

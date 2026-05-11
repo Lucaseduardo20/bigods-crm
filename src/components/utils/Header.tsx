@@ -1,14 +1,13 @@
 import { useState } from 'react';
-import Logo from '../../assets/logo-light-sem-subtitulo.png'
 import { FaBars, FaSignOutAlt, FaTimes } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../contexts/UserContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const {logout} = useAuth();
+  const {logout, user} = useAuth();
   const navigate = useNavigate();
 
 
@@ -22,11 +21,15 @@ export const Header = () => {
   return (
     <header className="fixed top-0 left-0 w-full bg-marrom-escuro text-claro p-4 z-50">
       <div className="container mx-auto flex justify-between items-center">
-        <img
-          src={Logo}
-          alt="Logo"
-          className="w-12 h-12"
-        />
+        <button
+          onClick={() => navigate('/home')}
+          className="text-left"
+        >
+          <span className="block text-lg font-bold leading-tight">
+            {user?.company_name || 'Bigods'}
+          </span>
+          <span className="block text-xs text-areia">Painel administrativo</span>
+        </button>
 
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -38,24 +41,24 @@ export const Header = () => {
         <nav className="hidden md:block">
           <ul className="flex space-x-4 items-center">
             <li>
-              <a href="/home" className="hover:text-areia transition-colors">
+              <Link to="/home" className="hover:text-areia transition-colors">
                 Início
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/appointments" className="hover:text-areia transition-colors">
+              <Link to="/appointments" className="hover:text-areia transition-colors">
                 Meus Agendamentos
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/schedule" className="hover:text-areia transition-colors">
-                Meu Horário.
-              </a>
+              <Link to="/schedule" className="hover:text-areia transition-colors">
+                Meu Horário
+              </Link>
             </li>
             <li>
-              <a href="/profile" className="hover:text-areia transition-colors">
+              <Link to="/profile" className="hover:text-areia transition-colors">
                 Perfil
-              </a>
+              </Link>
             </li>
             <li>
               <button
@@ -80,24 +83,24 @@ export const Header = () => {
       >
         <ul className="flex flex-col space-y-4">
           <li>
-            <a href="/home" className="text-marrom-escuro hover:text-areia transition-colors">
+            <Link to="/home" className="text-marrom-escuro hover:text-areia transition-colors">
               Início
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/appointments" className="text-marrom-escuro hover:text-areia transition-colors">
+            <Link to="/appointments" className="text-marrom-escuro hover:text-areia transition-colors">
               Meus Agendamentos
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/schedule" className="text-marrom-escuro hover:text-areia transition-colors">
-              Meu Horário.
-            </a>
+            <Link to="/schedule" className="text-marrom-escuro hover:text-areia transition-colors">
+              Meu Horário
+            </Link>
           </li>
           <li>
-            <a href="/profile" className="text-marrom-escuro hover:text-areia transition-colors">
+            <Link to="/profile" className="text-marrom-escuro hover:text-areia transition-colors">
               Perfil
-            </a>
+            </Link>
           </li>
 
           <li>

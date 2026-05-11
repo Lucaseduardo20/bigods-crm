@@ -1,25 +1,24 @@
 import { useState } from "react";
 import { Modal } from "../utils/Modal";
 import { doneAppointmentService } from "../../services/appointment";
-import { Appointment, AppointmentDialogProps, AppointmentPaymentMethod } from "../../types/appointment";
-import { ToastContainer, toast } from "react-toastify";
+import { AppointmentDialogProps, AppointmentPaymentMethod } from "../../types/appointment";
 import { useAppointments } from "../../contexts/AppointmentContext";
 
 
 export const DoneDialog = ({cancel_method, appointment, notify}: AppointmentDialogProps) => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<AppointmentPaymentMethod>(AppointmentPaymentMethod.credit_card);
 
-  const {refreshAppointments, setRefreshAppointments} = useAppointments();
+  const { setRefreshAppointments } = useAppointments();
   
     const setMethod = async () => {
       await doneAppointmentService({
         id: appointment.id,
         payment_method: selectedPaymentMethod
-      }).then((res: any) => {
+      }).then((res) => {
         cancel_method(null);
         setRefreshAppointments(true);
         notify('success',res.data.message);
-      }).catch((err: any) => {
+      }).catch(() => {
         notify('error' ,'Erro ao concluir atendimento. Entre em contato com o administrador do sistema.')
       })
   }

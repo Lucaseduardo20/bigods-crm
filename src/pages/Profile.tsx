@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import { FaSignOutAlt, FaEdit } from "react-icons/fa";
 import { Header } from "../components/utils/Header";
 import { toast } from "react-toastify";
-import defaultAvatar from '../assets/logo-classico-sem-subtitulo.jpg';
 
 export const Profile = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const initials = (user?.name || user?.company_name || 'B')
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join('')
+    .toUpperCase();
 
   const handleLogout = () => {
     logout();
@@ -25,11 +29,17 @@ export const Profile = () => {
         <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
           <div className="flex flex-col items-center mb-6">
             <div className="relative mb-4">
-              <img 
-                src={user?.photo || defaultAvatar} 
-                alt="Foto do barbeiro" 
-                className="w-32 h-32 rounded-full object-cover border-4 border-pele"
-              />
+              {user?.photo ? (
+                <img
+                  src={user.photo}
+                  alt="Foto do barbeiro"
+                  className="w-32 h-32 rounded-full object-cover border-4 border-pele"
+                />
+              ) : (
+                <div className="flex h-32 w-32 items-center justify-center rounded-full border-4 border-pele bg-marrom-escuro text-4xl font-bold text-claro">
+                  {initials}
+                </div>
+              )}
               <button className="absolute bottom-0 right-0 bg-areia p-2 rounded-full hover:bg-pele transition-colors">
                 <FaEdit className="text-marrom-escuro" />
               </button>

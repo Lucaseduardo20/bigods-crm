@@ -20,7 +20,7 @@ export const doneAppointmentService = async ({ id, payment_method }: DoneAppoint
 };
 
 export const cancelAppointmentService = async ({id, reason}: CancelAppointmentType) => {
-    await api.post('/appointments/done', {id: id, reason: reason}).then((response) => {
+    return await api.post('/appointments/cancel', {id: id, reason: reason}).then((response) => {
         return response;
     }).catch((err) => {
         console.log(err);

@@ -39,7 +39,7 @@ export const AddScheduleModal = ({ onClose }: AddScheduleModalProps) => {
                 end_time: endTime
             }
 
-            const response: any = await storeAvailableSchedule(payload);
+            const response = await storeAvailableSchedule(payload);
 
             if (response.status !== 201) {
                 throw new Error("Failed to update schedules");
@@ -48,7 +48,7 @@ export const AddScheduleModal = ({ onClose }: AddScheduleModalProps) => {
             toast.success("Horários atualizados com sucesso!");
             onClose();
             setRefreshSchedules(!refreshSchedules);
-        } catch (error) {
+        } catch {
             setLoading(false);
             toast.error("Erro ao salvar horários");
         }

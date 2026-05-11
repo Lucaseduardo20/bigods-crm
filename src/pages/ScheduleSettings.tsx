@@ -1,27 +1,22 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/UserContext";
-import { useNavigate } from "react-router-dom";
 import { Header } from "../components/utils/Header";
 import { Modal } from "../components/utils/Modal";
 import { toast } from "react-toastify";
 import { FiPlus, FiClock } from "react-icons/fi";
-import { getSchedulesService, storeAvailableSchedule } from "../services/user";
+import { getSchedulesService } from "../services/user";
 import { AddScheduleModal } from "../components/Schedule/AddScheduleModal";
 import { ScheduleList } from "../components/Schedule/ScheduleList";
 import { DateSchedule } from "../types/schedule";
-import { SubmitButton } from "../components/Schedule/ScheduleSubmitButton";
 import { ToastContainer } from "react-toastify";
 import {Loading} from '../components/utils/Loading'
 
 export const ScheduleSettings = () => {
-    const { user, refreshSchedules } = useAuth();
-    const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(false);
+    const { refreshSchedules } = useAuth();
+    const [, setIsLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [schedules, setSchedules] = useState<DateSchedule[]>([]);
-    const [localSchedules, setLocalSchedules] = useState<DateSchedule[]>([]);
     const [isFetching, setIsFetching] = useState(true);
-    const hasFetched = useRef(false);
 
     const formatDate = (dateString: string): string => {
         const formattedDate = new Date(dateString + "T00:00:00");
@@ -41,8 +36,7 @@ export const ScheduleSettings = () => {
                 throw new Error("Failed to fetch schedules");
             }
             setSchedules(response.data.data);
-            setLocalSchedules(response.data.data);
-        } catch (error) {
+        } catch {
             toast.error('Não foi possível listar seus horários');
         } finally {
             setIsFetching(false);

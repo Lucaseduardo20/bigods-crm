@@ -11,7 +11,7 @@ export const CancelDialog = ({ cancel_method, appointment, notify }: Appointment
       notify("error", "Por favor, insira o motivo do cancelamento.");
       return;
     }
-    return await cancelAppointmentService({id: appointment.id, reason: cancelReason}).then((response) => {
+    return await cancelAppointmentService({id: appointment.id, reason: cancelReason}).then(() => {
         cancel_method(null)
         notify('info', 'Agendamento cancelado com sucesso!')
     }).catch((err) => {

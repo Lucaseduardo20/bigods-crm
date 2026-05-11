@@ -11,25 +11,13 @@ export const previewService = async (token: string) => {
 }
 
 export const storeAvailableSchedule = async (payload: UserSchedule) => {
-    return await api.post('/user/available-schedules', payload).then((res) => {
-        return res;
-    }).catch((err) => {
-        return err;
-    });
+    return api.post('/user/available-schedules', payload);
 }
 
 export const getSchedulesService = async ()=> {
-    return await api.get( '/user/available-schedules').then((res: any) => {
-        return res
-    }).catch((err: any) => {
-        return err
-    })
+    return api.get('/user/available-schedules')
 } 
 
 export const deleteScheduleService = async (id: number)=> {
-    return await api.delete( '/user/available-schedules/' + id).then((res: any) => {
-        return res
-    }).catch((err: any) => {
-        return err
-    })
+    return api.delete('/user/available-schedules/' + id)
 } 

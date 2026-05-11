@@ -1,6 +1,7 @@
-import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import { AxiosError, AxiosResponse } from 'axios';
 import { loginService } from '../services/auth';
-import { loginData } from '../types/auth';
+import { AuthResponse, loginData } from '../types/auth';
 import { UserType } from '../types/user';
 
 interface UserContextData {
@@ -12,7 +13,7 @@ interface UserContextData {
   setRefreshAppointments: (refresh: boolean) => void;
   refreshSchedules: boolean,
   setRefreshSchedules: (refresh: boolean) => void;
-  login: (data: loginData) => Promise<void>;
+  login: (data: loginData) => Promise<AxiosResponse<AuthResponse> | undefined>;
   logout: () => void;
 }
 
@@ -28,20 +29,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const response = await loginService(data);
       setIsAuthenticated(true);
-      console.log(response.data.token)
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      if (response.data.user?.company_id) {
+        localStorage.setItem('tenant_company_id', String(response.data.user.company_id));
+      }
+      setUser(response.data.user);
       return response;
-    } catch (error: any) {
-      console.log(error);
-      return error.response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        return error.response;
+      }
+
+      return undefined;
     }
   };
 
   const logout = async () => {
     setIsAuthenticated(false);
     setUser({} as UserType);
-    await localStorage.setItem('token', '');
-    await localStorage.setItem('user', '');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('tenant_company_id');
   };
 
   
@@ -52,7 +61,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const userStorage = localStorage.getItem('user');
       if (token && userStorage) {
         setIsAuthenticated(true);
-        setUser(JSON.parse(userStorage))
+        const parsedUser = JSON.parse(userStorage);
+        setUser(parsedUser)
+        if (parsedUser?.company_id) {
+          localStorage.setItem('tenant_company_id', String(parsedUser.company_id));
+        }
       }
     };
 

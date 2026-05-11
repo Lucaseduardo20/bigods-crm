@@ -1,7 +1,6 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 import { AppointmentContextType, Appointment } from "../types/appointment";
-import { cancelAppointmentService, getAppointments } from "../services/appointment";
-import { AxiosResponse } from "axios";
+import { getAppointments } from "../services/appointment";
 
 const AppointmentContext = createContext<AppointmentContextType | undefined>(undefined)
 

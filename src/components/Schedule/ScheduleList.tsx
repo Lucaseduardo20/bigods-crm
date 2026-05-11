@@ -3,8 +3,6 @@ import { ScheduleListProps } from "../../types/schedule";
 import { ScheduleItem } from "./ScheduleItem";
 
 export const ScheduleList = ({ schedules, formatDate }: ScheduleListProps) => {
-
-    console.log(schedules)
     if (schedules.length === 0) {
         return (
             <div className="text-center py-6 text-marrom-claro">

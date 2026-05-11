@@ -1,22 +1,19 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
-import Logo from '../assets/logo-light-sem-subtitulo.png'
 import { previewService } from "../services/user";
 import { Appointment } from "../types/appointment";
-import { FaBars, FaTimes } from 'react-icons/fa';
 import { Header } from "../components/utils/Header";
 import { NotifyType } from "../types/global";
 import { toast } from "react-toastify";
 import { DetailsDialog } from "../components/Appointments/DetailsDialog";
 
 export const Home = () => {
-  const { isAuthenticated, user } = useAuth(); 
+  const { user } = useAuth(); 
   const navigate = useNavigate();
   const [nextAppointments, setNextAppointments] = useState<Appointment[]>([]);
   const [appointmentsCount, setAppointmentsCount] = useState<number>();
   const [commission, setCommission] = useState<number>();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [detailsAppointment, setDetailsAppointment] = useState<Appointment | null>(null);
     const notify: NotifyType = (type, message) => {
       toast[type](message);
@@ -37,9 +34,8 @@ export const Home = () => {
         setNextAppointments(res.next_appointments);
         setCommission(res.commission);
         setAppointmentsCount(res.total_week_appointments);
-      } catch (err: any) {
-        console.log(err);
-        alert(err);
+      } catch {
+        toast.error('Nao foi possivel carregar seu resumo.');
       }
     };
   
@@ -54,7 +50,9 @@ export const Home = () => {
           <h1 className="text-2xl font-bold text-marrom-escuro">
             Olá, {user?.name || "Usuário"}!
           </h1>
-          <p className="text-marrom-claro">Bem-vindo de volta ao seu painel.</p>
+          <p className="text-marrom-claro">
+            {user?.company_name ? `Painel de ${user.company_name}` : 'Bem-vindo de volta ao seu painel.'}
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">

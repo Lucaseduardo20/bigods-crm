@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import LogoLight from '../assets/logo-light.png'
 import { useAuth } from '../contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
 import { NotifyType } from '../types/global';
@@ -7,40 +6,38 @@ import { toast, ToastContainer } from 'react-toastify';
 
 
 export const Login: React.FC = () => {
-    const [email, setEmail] = useState('admin@admin.com');
-    const [password, setPassword] = useState('123123');
-    const [loginStatus, setLoginStatus] = useState<number>();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const { login, isAuthenticated, setIsAuthenticated, setUser } = useAuth();
+    const { login } = useAuth();
     const navigate = useNavigate();
     const notify: NotifyType = (type, message) => {
       toast[type](message);
     };
 
 
-    const handleLogin = async (e: any) => {
+    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
         try {
-          const response: any = await login({ email, password });
+          const response = await login({ email, password });
           
           if (response && response.status === 200) {
             notify('success', 'Login efetuado com sucesso!');
-            setLoginStatus(response.status);
             setTimeout(() => {
-              setIsAuthenticated(true);
               navigate('/home');
               setLoading(false);
-              setUser(response.data.user);
-              localStorage.setItem('user', JSON.stringify(response.data.user));
             }, 2000);
           } else if (response && response.status === 401) {
-            setLoginStatus(401);
+            notify('error', 'Email ou senha invalidos.');
+            setLoading(false);
           } else {
-            setLoginStatus(response.status || 500);
+            notify('error', 'Nao foi possivel entrar no painel.');
+            setLoading(false);
           }
-        } catch (error) {
-          setLoginStatus(500); 
+        } catch {
+          notify('error', 'Erro inesperado ao entrar.');
+          setLoading(false);
         }
       };
 
@@ -48,16 +45,13 @@ export const Login: React.FC = () => {
     <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#643f23] to-[#ffecb9] p-4">
       <article className="w-full max-w-md bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="bg-marrom-escuro p-6">
-          <img
-            src={LogoLight}
-            alt="Logo da Empresa"
-            className="w-40 mx-auto"
-          />
+          <p className="text-center text-3xl font-bold text-claro">Bigods</p>
+          <p className="text-center text-sm text-areia">Painel da barbearia</p>
         </div>
 
         <div className="p-6">
           <h2 className="text-2xl font-bold text-marrom-escuro mb-4">Login</h2>
-          <form>
+          <form onSubmit={handleLogin}>
             <div className="mb-4">
               <label htmlFor="username" className="block text-marrom-claro text-sm font-bold mb-2">
                 Usuário
@@ -68,7 +62,7 @@ export const Login: React.FC = () => {
                 type="text"
                 id="username"
                 className="w-full px-3 py-2 border border-cinza-paleta rounded-lg focus:outline-none focus:ring-2 focus:ring-areia"
-                placeholder="Digite seu usuário"
+                placeholder="email@barbearia.com"
               />
             </div>
 
@@ -87,8 +81,8 @@ export const Login: React.FC = () => {
             </div>
 
             <button
+              type="submit"
               disabled={loading}
-              onClick={(e) => handleLogin(e)}
               className="w-full bg-areia text-marrom-escuro font-bold py-2 px-4 rounded-lg hover:cursor-pointer hover:bg-pele transition-hover"
             >
               {!loading ? 'Entrar' : 'Carregando...'}

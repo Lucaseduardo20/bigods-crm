@@ -2,8 +2,8 @@ import { NotifyType } from "./global";
 
 export type AppointmentContextType = {
     appointments: Appointment[];
-    setAppointments: () => void;
-    getAppointmentsApi: () => any,
+    setAppointments: (appointments: Appointment[]) => void;
+    getAppointmentsApi: () => Promise<void>,
     refreshAppointments: boolean,
     setRefreshAppointments: (refreshingAppointments: boolean) => void
 

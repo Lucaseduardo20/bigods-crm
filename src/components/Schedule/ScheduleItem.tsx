@@ -11,10 +11,10 @@ export const ScheduleItem = ({ period }: ScheduleItemProps) => {
   const [loading, setLoading] = useState(false);
   const handleRemovePeriod = async (id: number) => {
     setLoading(true)
-    return await deleteScheduleService(id).then((res) => {
+    return await deleteScheduleService(id).then(() => {
       toast.success('Horário deletado com sucesso!');
       setRefreshSchedules(!refreshSchedules);
-    }).catch((err) => {
+    }).catch(() => {
       toast.error('Erro ao deletar horário, entre em contato com o administrador.')
       setLoading(false)
     })
