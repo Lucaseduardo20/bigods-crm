@@ -18,6 +18,10 @@ export type Appointment = {
     assigned_to?: string,
     services: Service[],
     payment_method?: AppointmentPaymentMethod,
+    completion_details?: string | null,
+    details?: string | null,
+    notes?: string | null,
+    reason?: string | null,
     estimated_time: string
 }
 
@@ -47,7 +51,8 @@ export enum AppointmentPaymentMethod {
 
 export interface DoneAppointmentType {
     id: number,
-    payment_method: AppointmentPaymentMethod
+    payment_method: AppointmentPaymentMethod,
+    details?: string
 }
 
 export interface CancelAppointmentType {
