@@ -6,24 +6,14 @@ export const getAppointments = async () => {
     return response.data;
 }
 
-export const doneAppointmentService = async ({ id, payment_method }: DoneAppointmentType) => {
-    return await api.post('/appointments/done', 
-        { id, payment_method },
-    )
-    .then((response) => {
-        return response;
-    })
-    .catch((err) => {
-        console.log(err);
-        return err;
+export const doneAppointmentService = async ({ id, payment_method, details }: DoneAppointmentType) => {
+    return api.post('/appointments/done', {
+        id,
+        payment_method,
+        details: details?.trim() || undefined,
     });
 };
 
 export const cancelAppointmentService = async ({id, reason}: CancelAppointmentType) => {
-    return await api.post('/appointments/cancel', {id: id, reason: reason}).then((response) => {
-        return response;
-    }).catch((err) => {
-        console.log(err);
-        return err;
-    })
+    return api.post('/appointments/cancel', { id, reason });
 }

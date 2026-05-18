@@ -2,6 +2,8 @@ import { AppointmentDialogProps, AppointmentStatus, getPaymentMethodLabel, parse
 import { Modal } from "../utils/Modal"
 
 export const DetailsDialog = ({cancel_method, appointment}: AppointmentDialogProps) => {
+  const completionDetails = appointment.completion_details || appointment.details || appointment.notes;
+
   return (
     <Modal>
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
@@ -71,12 +73,34 @@ export const DetailsDialog = ({cancel_method, appointment}: AppointmentDialogPro
           </p>
         </div>
         {parseAppointmentStatus(appointment.status) === AppointmentStatus.done &&
+          <>
+            <div className="mb-6">
+              <h4 className="text-lg font-semibold text-marrom-escuro mb-2">
+                Forma de Pagamento
+              </h4>
+              <p className="text-marrom-claro">
+                {appointment.payment_method ? getPaymentMethodLabel(appointment.payment_method) : ''}
+              </p>
+            </div>
+            {completionDetails && (
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-marrom-escuro mb-2">
+                  Detalhes da Conclusão
+                </h4>
+                <p className="text-marrom-claro whitespace-pre-line">
+                  {completionDetails}
+                </p>
+              </div>
+            )}
+          </>
+        }
+        {parseAppointmentStatus(appointment.status) === AppointmentStatus.canceled && appointment.reason &&
           <div className="mb-6">
             <h4 className="text-lg font-semibold text-marrom-escuro mb-2">
-              Forma de Pagamento
+              Motivo do Cancelamento
             </h4>
-            <p className="text-marrom-claro">
-              {appointment.payment_method ? getPaymentMethodLabel(appointment.payment_method) : ''}
+            <p className="text-marrom-claro whitespace-pre-line">
+              {appointment.reason}
             </p>
           </div>
         }
